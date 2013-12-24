@@ -36,7 +36,7 @@ namespace libsitu {
     Watch(double lat, double lon, double rad, WatchAlarm alarm, void *data);
     ~Watch();
     Watch(const Watch &original);
-    const Watch& operator=(const Watch &rhs);
+    Watch& operator=(const Watch &rhs);
     void handle_fix(const Fix &fix, const char *name);
   private:
     double m_lat;

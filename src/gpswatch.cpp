@@ -51,7 +51,7 @@ namespace libsitu {
   {
   }
 
-  const Watch& Watch::operator=(const Watch &rhs)
+  Watch& Watch::operator=(const Watch &rhs)
   {
     if (this != &rhs) {
       m_lat = rhs.m_lat;

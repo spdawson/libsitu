@@ -40,7 +40,7 @@ public:
 
 private:
   Client(const Client&);
-  const Client& operator=(const Client&);
+  Client& operator=(const Client&);
 
   virtual void handle_fix(const libsitu::Fix &fix) {
     if (fix.valid) {

@@ -90,7 +90,7 @@ namespace libsitu {
   private:
 
     Gps(const Gps&);
-    const Gps& operator=(const Gps&);
+    Gps& operator=(const Gps&);
 
     typedef std::map<std::string,Watch> WatchMap;
 
