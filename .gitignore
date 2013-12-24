@@ -1,0 +1,68 @@
+#  Copyright 2013 Simon Dawson
+#
+#  This file is part of libsitu.
+#
+#  libsitu is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU Lesser General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  libsitu is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU Lesser General Public License for more details.
+#
+#  You should have received a copy of the GNU Lesser General Public License
+#  along with libsitu.  If not, see <http://www.gnu.org/licenses/>.
+
+# http://www.gnu.org/software/automake
+
+Makefile.in
+
+# http://www.gnu.org/software/autoconf
+
+/autom4te.cache
+/aclocal.m4
+/compile
+/configure
+/depcomp
+/install-sh
+/missing
+
+# autoregen.sh generated stuff
+
+/INSTALL
+/config.guess
+/config.h.in
+/config.sub
+/ltmain.sh
+/m4/
+
+# configure generated stuff
+
+/Makefile
+/config.h
+/config.log
+/config.status
+/demos/.deps/
+/demos/Makefile
+/libsitu.pc
+/libtool
+/src/.deps/
+/src/Makefile
+/stamp-h1
+/utils/.deps/
+/utils/Makefile
+
+# make generated stuff
+
+/demos/.libs/
+/demos/demo
+/demos/*.o
+/src/.libs/
+/src/*.la
+/src/*.lo
+/src/*.o
+/utils/.libs/
+/utils/situ
+/utils/*.o
