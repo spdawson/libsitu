@@ -39,14 +39,29 @@ AC_SUBST(DEPS_LIBS)
 
 # Checks for header files.
 AC_STDC_HEADERS
-AC_CHECK_HEADER(gmp.h)
-AC_CHECK_HEADER(mpfr.h)
+AC_CHECK_HEADER(gmp.h,,
+  [AC_MSG_ERROR([header 'gmp.h' is required])]
+)
+AC_CHECK_HEADER(mpfr.h,,
+  [AC_MSG_ERROR([header 'mpfr.h' is required])]
+)
+AC_CHECK_HEADERS([getopt.h unistd.h],,
+  [AC_MSG_ERROR([headers 'getopt.h' and 'unistd.h' are required])]
+)
+
+AC_CHECK_FUNCS([getopt_long],,
+  [AC_MSG_ERROR([library function 'getopt_long' is required])]
+)
 
 # Checks for typedefs, structures, and compiler characteristics.
 
 # Checks for library functions.
-AC_CHECK_LIB(gmp, __gmpz_init)
-AC_CHECK_LIB(mpfr,mpfr_init)
+AC_CHECK_LIB(gmp, __gmpz_init,,
+  [AC_MSG_ERROR([library 'gmp' is required])]
+)
+AC_CHECK_LIB(mpfr,mpfr_init,,
+  [AC_MSG_ERROR([library 'mpfr' is required])]
+)
 
 AC_CONFIG_FILES([Makefile src/Makefile demos/Makefile utils/Makefile libsitu.pc])
 AC_OUTPUT
