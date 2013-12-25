@@ -22,6 +22,7 @@
 #include <string.h>
 #include <time.h>
 
+#include <getopt.h>
 #include <unistd.h>
 
 #include <gpsdebug.h>
@@ -73,7 +74,7 @@ void print_help(
          "  -l, --loop                 Run in a loop, outputting fix information\n"
          "  -t, --timeout <timeout_s>  Timeout waiting for GPS data after the\n"
          "                             specified number of seconds\n"
-         "  --host <host>              Connect to gpsd on specified host\n"
+         "  -x,--host <host>           Connect to gpsd on specified host\n"
          "  -p, --port <port>          Connect to gpsd on specified port\n",
          program_name);
 }
@@ -83,63 +84,54 @@ int main(int argc, char *argv[])
   int exit_code = EXIT_SUCCESS;
 
   /* Process command line */
+  const char *program_name = argv[0];
   bool loop = false;
   int timeout_s = 5;
   const char *host = "localhost";
   const char *port = "gpsd";
-  {
-    const char *program_name = argv[0];
-    int i = 0;
-    for (i = 1; i < argc; ++i) {
-      const char *arg_i = argv[i];
-      if (NULL != arg_i && '\0' != *arg_i) {
-        if (0 == strcmp("-h", arg_i) || 0 == strcmp("--help", arg_i)) {
-          print_help(program_name);
-          exit_code = EXIT_SUCCESS;
-          return exit_code;
-        } else if (0 == strcmp("-l", arg_i) || 0 == strcmp("--loop", arg_i)) {
-          loop = true;
-        } else if (0 == strcmp("-t", arg_i) ||
-                   0 == strcmp("--timeout", arg_i)) {
-          if (argc > ++i) {
-            if (!libsitu::Util::parse_string_to_integer(argv[i], &timeout_s)) {
-              fprintf(stderr, "Failed to parse --timeout option value\n");
-              exit_code = EXIT_FAILURE;
-              return exit_code;
-            }
-          } else {
-            fprintf(stderr, "No argument given for --timeout option\n");
-            exit_code = EXIT_FAILURE;
-            return exit_code;
-          }
-        } else if (0 == strcmp("--host", arg_i)) {
-          if (argc > ++i) {
-            host = argv[i];
-            if (NULL == host || '\0' == *host) {
-              fprintf(stderr, "Empty argument given for --host option\n");
-              exit_code = EXIT_FAILURE;
-              return exit_code;
-            }
-          } else {
-            fprintf(stderr, "No argument given for --host option\n");
-            exit_code = EXIT_FAILURE;
-            return exit_code;
-          }
-        } else if (0 == strcmp("-p", arg_i) || 0 == strcmp("--port", arg_i)) {
-          if (argc > ++i) {
-            port = argv[i];
-            if (NULL == port || '\0' == *port) {
-              fprintf(stderr, "Empty argument given for --port option\n");
-              exit_code = EXIT_FAILURE;
-              return exit_code;
-            }
-          } else {
-            fprintf(stderr, "No argument given for --port option\n");
-            exit_code = EXIT_FAILURE;
-            return exit_code;
-          }
-        }
+  while (true) {
+    int option_index = 0;
+    const static struct option long_options[] = {
+      {"help", no_argument, 0, 'h'},
+      {"loop", no_argument, 0, 'l'},
+      {"timeout", required_argument, 0, 't'},
+      {"host", required_argument, 0, 'x'}, /* N.B. Cannot use 'h' */
+      {"port", required_argument, 0, 'p'}
+    };
+    const int c = getopt_long(argc, argv, "hlt:x:p:",
+                              long_options, &option_index);
+    if (-1 == c) {
+      /* All options parsed */
+      break;
+    }
+    switch (c) {
+    case 'h':
+      print_help(program_name);
+      exit_code = EXIT_SUCCESS;
+      return exit_code;
+    case 'l':
+      loop = true;
+      break;
+    case 't':
+      if (!libsitu::Util::parse_string_to_integer(optarg, &timeout_s)) {
+        fprintf(stderr, "Failed to parse --timeout option value\n");
+        exit_code = EXIT_FAILURE;
+        return exit_code;
       }
+      break;
+    case 'x':
+      /* Host option */
+      host = optarg;
+      break;
+    case 'p':
+      port = optarg;
+      break;
+    case '?':
+      /* Unexpected option parsed */
+      exit_code = EXIT_FAILURE;
+      return exit_code;
+    default:
+      break;
     }
   }
 
