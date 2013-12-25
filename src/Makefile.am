@@ -20,5 +20,5 @@ include_HEADERS = libsitu.h
 
 libsitu_la_SOURCES = libsitu.h libsitu.cpp gpswatch.h gpswatch.cpp gpsdebug.h gpsmath.h gpsmath.cpp gpsutil.cpp gpspoller.cpp
 libsitu_la_CPPFLAGS = -I. $(DEPS_CFLAGS)
-libsitu_la_CXXFLAGS = -Wall -Wextra -Werror -Weffc++
+libsitu_la_CXXFLAGS = -Wall -Wextra -Weffc++
 libsitu_la_LIBADD = $(DEPS_LIBS) -lpthread

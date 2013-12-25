@@ -19,5 +19,5 @@ noinst_PROGRAMS = demo
 
 demo_SOURCES = demo.cpp
 demo_CPPFLAGS = -I$(top_srcdir)/src
-demo_CXXFLAGS = -Wall -Wextra -Werror -Weffc++
+demo_CXXFLAGS = -Wall -Wextra -Weffc++
 demo_LDADD = -L$(top_builddir)/src -lsitu $(DEPS_LIBS) -lpthread

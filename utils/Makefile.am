@@ -19,5 +19,5 @@ bin_PROGRAMS = situ
 
 situ_SOURCES = situ.cpp
 situ_CPPFLAGS = -I$(top_srcdir)/src
-situ_CXXFLAGS = -Wall -Wextra -Werror -Weffc++
+situ_CXXFLAGS = -Wall -Wextra -Weffc++
 situ_LDADD = -L$(top_builddir)/src -lsitu $(DEPS_LIBS) -lpthread
