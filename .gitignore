@@ -66,3 +66,7 @@ Makefile.in
 /utils/.libs/
 /utils/situ
 /utils/*.o
+
+# miscellaneous
+
+*~
