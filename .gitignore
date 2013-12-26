@@ -29,6 +29,11 @@ Makefile.in
 /install-sh
 /missing
 
+# autoscan generated stuff
+
+/autoscan.log
+/configure.scan
+
 # autoregen.sh generated stuff
 
 /INSTALL
