@@ -74,7 +74,7 @@ void print_help(
          "  -l, --loop                 Run in a loop, outputting fix information\n"
          "  -t, --timeout <timeout_s>  Timeout waiting for GPS data after the\n"
          "                             specified number of seconds\n"
-         "  -x,--host <host>           Connect to gpsd on specified host\n"
+         "  -x, --host <host>          Connect to gpsd on specified host\n"
          "  -p, --port <port>          Connect to gpsd on specified port\n",
          program_name);
 }
