@@ -56,7 +56,7 @@ namespace libsitu {
 
     /* NB, std::isnan is needed as that's how AVR32 g++4.2 offers C99 maths
      * features like isnan. g++4.4 appears to include them under ::isnan.
-     o*/
+     */
     bool is_nan(double x)
     {
 #ifdef __AVR32__
