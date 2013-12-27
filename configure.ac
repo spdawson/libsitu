@@ -17,9 +17,9 @@
 
 AC_PREREQ([2.69])
 AC_INIT([libsitu], [0.0.0], [spdawson@gmail.com], [libsitu])
-AC_CONFIG_SRCDIR([config.h.in])
-AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE(no-dist-gzip dist-bzip2)
+AC_CONFIG_SRCDIR([config.h.in])
+AM_CONFIG_HEADER([config.h])
 
 AC_SUBST(PACKAGE_AUTHOR, ["Simon Dawson"])
 AC_SUBST(PACKAGE_DESCRIPTION, ["GPS client library"])
@@ -38,6 +38,10 @@ AC_PROG_INSTALL
 AC_PROG_LIBTOOL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
+AC_PROG_RANLIB
+
+# Test the C++ compiler.
+AC_LANG_CPLUSPLUS
 
 # Checks for libraries.
 DEP_MODULES=libgps
