@@ -17,49 +17,23 @@
   along with libsitu.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * @brief Command line client for libsitu
+ *
+ * Output GPS fix data gathered by libsitu. By default, a single fix is
+ * output.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
 #include <getopt.h>
-#include <unistd.h>
 
-#include <gpsdebug.h>
 #include <libsitu.h>
 
-class Client : public libsitu::Gps {
-public:
-  Client(const char *host, const char *port, int timeout_s, bool oneshot)
-    : libsitu::Gps(host, port, timeout_s * 1000000, 500000),
-      m_oneshot(oneshot),
-      m_fix_found(false)
-  {}
-  virtual ~Client() {}
-
-  bool fix_found() const { return m_fix_found; }
-
-private:
-  Client(const Client&);
-  Client& operator=(const Client&);
-
-  virtual void handle_fix(const libsitu::Fix &fix) {
-    if (fix.valid) {
-      m_fix_found = true;
-      libsitu::Util::dump_fix_json(fix);
-      if (m_oneshot) {
-        exit(EXIT_SUCCESS);
-      }
-    }
-  }
-  virtual void handle_timeout() {
-    fprintf(stderr, "Timeout\n");
-    exit(EXIT_FAILURE);
-  }
-
-  bool m_oneshot;
-  bool m_fix_found;
-};
+#include <client.h>
 
 void print_help(
   const char *program_name
@@ -135,7 +109,7 @@ int main(int argc, char *argv[])
     }
   }
 
-  Client client(host, port, timeout_s, !loop);
+  libsitu::Client client(host, port, timeout_s, !loop);
 
   /* N.B. Sleep here for longer than the timeout, to keep the main thread
      alive */
