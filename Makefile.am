@@ -21,3 +21,29 @@ pkgconfig_DATA = libsitu.pc
 dist_doc_DATA = AUTHORS ChangeLog NEWS README COPYING COPYING.LESSER
 
 ACLOCAL_AMFLAGS = -I m4
+
+if HAVE_GIT
+if HAVE_GITLOG_TO_CHANGELOG
+.PHONY: update-ChangeLog
+update-ChangeLog:
+	if test -d $(top_srcdir)/.git ; then \
+		test -f $(top_srcdir)/.last-cl-gen && \
+			REVISION_RANGE=$$(cat $(top_srcdir)/.last-cl-gen) ; \
+		test -n "$$REVISION_RANGE" && REVISION_RANGE=$$REVISION_RANGE.. ; \
+		gitlog-to-changelog \
+			--format='* %s%n%n%b%n' --no-cluster \
+			--strip-tab --strip-cherry-pick \
+			-- $$REVISION_RANGE \
+			>$(top_srcdir)/ChangeLog.tmp ; \
+		test -s $(top_srcdir)/ChangeLog.tmp && \
+			echo >>$(top_srcdir)/ChangeLog.tmp ; \
+		cat $(top_srcdir)/ChangeLog >>$(top_srcdir)/ChangeLog.tmp \
+		&& mv -f $(top_srcdir)/ChangeLog.tmp $(top_srcdir)/ChangeLog ; \
+		git rev-list -n 1 HEAD >$(top_srcdir)/.last-cl-gen ; \
+	fi
+
+.last-cl-gen: update-ChangeLog
+
+EXTRA_DIST = .last-cl-gen
+endif
+endif

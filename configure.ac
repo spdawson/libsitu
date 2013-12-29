@@ -43,6 +43,20 @@ AC_PROG_RANLIB
 # Test the C++ compiler.
 AC_LANG_CPLUSPLUS
 
+# Stuff for Git.
+AC_CHECK_PROGS([GIT], [git])
+if test -z "$GIT";
+   then AC_MSG_WARN([git not found - continuing without git support])
+fi
+AM_CONDITIONAL([HAVE_GIT], [test -n "$GIT"])
+
+# Stuff for gitlog-to-changelog.
+AC_CHECK_PROGS([GITLOG_TO_CHANGELOG], [gitlog-to-changelog])
+if test -z "$GITLOG_TO_CHANGELOG";
+   then AC_MSG_WARN([gitlog-to-changelog not found - continuing without gitlog-to-changelog support])
+fi
+AM_CONDITIONAL([HAVE_GITLOG_TO_CHANGELOG], [test -n "$GITLOG_TO_CHANGELOG"])
+
 # Checks for libraries.
 DEP_MODULES=libgps
 PKG_CHECK_MODULES(DEPS, $DEP_MODULES)
