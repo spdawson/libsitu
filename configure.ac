@@ -17,7 +17,7 @@
 
 AC_PREREQ([2.69])
 AC_INIT([libsitu], [0.0.0], [spdawson@gmail.com], [libsitu])
-AM_INIT_AUTOMAKE(no-dist-gzip dist-bzip2)
+AM_INIT_AUTOMAKE(no-dist-gzip dist-xz)
 AC_CONFIG_SRCDIR([config.h.in])
 AM_CONFIG_HEADER([config.h])
 
