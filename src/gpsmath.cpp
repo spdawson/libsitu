@@ -60,25 +60,9 @@
 namespace libsitu {
   namespace Math {
 
-    /* NB, std::isnan is needed as that's how AVR32 g++4.2 offers C99 maths
-     * features like isnan. g++4.4 appears to include them under ::isnan.
-     */
-    bool is_nan(double x)
-    {
-#ifdef __AVR32__
-      return std::isnan(x);
-#else /* __AVR32__ */
-      return isnan(x);
-#endif /* __AVR32__ */
-    }
-
     bool is_finite(double x)
     {
-#ifdef __AVR32__
-      return std::isfinite(x);
-#else /* __AVR32__ */
       return isfinite(x);
-#endif /* __AVR32__ */
     }
 
     double deg2rad(double d)
@@ -239,7 +223,7 @@ namespace libsitu {
       }
 
       state =
-        is_nan(distance_abs_value) || is_nan(error_radius) ? STATE_UNKNOWN :
+        isnan(distance_abs_value) || isnan(error_radius) ? STATE_UNKNOWN :
         distance_abs_value + error_radius <= there_rad ? STATE_NEAR :
         distance_abs_value - error_radius > there_rad ? STATE_FAR :
         /* Failing that, we're not certain */
