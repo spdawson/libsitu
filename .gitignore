@@ -74,6 +74,7 @@ Makefile.in
 
 # make dist generated stuff
 
+/.last-cl-gen
 /libsitu-*.tar.*
 /libsitu-*.zip
 
