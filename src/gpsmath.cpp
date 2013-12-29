@@ -17,13 +17,17 @@
   along with libsitu.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <config.h>
+
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <gps.h>
+#ifdef HAVE_LIBMPFR
 #include <mpfr.h>
+#endif /* HAVE_LIBMPFR */
 
 #include <gpsdebug.h>
 #include <libsitu.h>
@@ -50,6 +54,8 @@
  * i386 FPU.
  */
 #define LIBSITU_PRECISION_BITS 64
+
+#define LIBSITU_EARTH_RADIUS_m 6378137.0
 
 namespace libsitu {
   namespace Math {
@@ -85,6 +91,7 @@ namespace libsitu {
     bool calculate_rms(double x, double y, double &rms)
     {
       /* N.B. Calculate the RMS horizontal positional error. */
+#ifdef HAVE_LIBMPFR
       MPFR_DECL_INIT(epx, LIBSITU_PRECISION_BITS);
       MPFR_DECL_INIT(epy, LIBSITU_PRECISION_BITS);
       mpfr_set_ld(epx, x, GMP_RNDN);
@@ -98,6 +105,10 @@ namespace libsitu {
 
       rms = mpfr_get_d(hypotenuse, GMP_RNDN);
       return true;
+#else /* HAVE_LIBMPFR */
+      rms = hypot(x, y);
+      return true;
+#endif /* HAVE_LIBMPFR */
     }
 
     double distance(
@@ -114,8 +125,8 @@ namespace libsitu {
     {
       const double here_lat = fix.latitude;
       const double here_lon = fix.longitude;
-      const double here_eph = fix.eph;
 
+#ifdef HAVE_LIBMPFR
       /* Get eastings and northings in radian measure */
       MPFR_DECL_INIT(here_e, LIBSITU_PRECISION_BITS);
       MPFR_DECL_INIT(here_n, LIBSITU_PRECISION_BITS);
@@ -155,7 +166,7 @@ namespace libsitu {
 
       /* Convert to a great circle distance in meters */
       MPFR_DECL_INIT(earth_radius_m, LIBSITU_PRECISION_BITS);
-      mpfr_set_ld(earth_radius_m, 6378137.0, GMP_RNDN); /* Equatorial Earth radius. */
+      mpfr_set_ld(earth_radius_m, LIBSITU_EARTH_RADIUS_m, GMP_RNDN); /* Equatorial Earth radius. */
 
       /* return angular_delta * earth_radius_m; */
       MPFR_DECL_INIT(res, LIBSITU_PRECISION_BITS);
@@ -184,12 +195,35 @@ namespace libsitu {
                   mpfr_get_d(CC, GMP_RNDN),
                   mpfr_get_d(angular_delta, GMP_RNDN),
                   mpfr_get_d(res, GMP_RNDN));
+
 #endif /* LIBSITU_DEBUG_MATH */
 
       const double distance_val = mpfr_get_d(res, GMP_RNDN);
+#else /* HAVE_LIBMPFR */
+      const double here_e = deg2rad(here_lon);
+      const double here_n = deg2rad(90.0 - here_lat);
+      const double there_e = deg2rad(there_lon);
+      const double there_n = deg2rad(90.0 - there_lat);
+      const double diff_e = here_e - there_e;
+      const double A = sin(here_n);
+      const double B = sin(there_n);
+      const double C = cos(here_n);
+      const double D = cos(there_n);
+      const double E = cos(diff_e);
+      const double AA = A * B;
+      double BB = C * D;
+      double BB = BB * E;
+      const double CC = AA * BB;
+      const double angular_delta = acos(CC);
+      const double earth_radius_m = LIBSITU_EARTH_RADIUS_m;
+      const double res = angular_delta * earth_radius_m;
+
+      const double distance_val = res;
+#endif /* HAVE_LIBMPFR */
       const double distance_abs_value = fabs(distance_val);
 
       /* Allow for up to 3 standard deviations of error */
+      const double here_eph = fix.eph;
       double error_radius = 3 * here_eph;
       if (error_radius >= there_rad) {
         /* It is possible that an unrealistically low watch radius has

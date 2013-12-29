@@ -72,10 +72,10 @@ AC_CHECK_HEADERS([limits.h stdlib.h string.h unistd.h],,
   [AC_MSG_ERROR([required header(s) not found])]
 )
 AC_CHECK_HEADER(gmp.h,,
-  [AC_MSG_ERROR([header 'gmp.h' is required])]
+  [AC_MSG_WARN([header 'gmp.h' not found - continuing without gmp support])]
 )
 AC_CHECK_HEADER(mpfr.h,,
-  [AC_MSG_ERROR([header 'mpfr.h' is required])]
+  [AC_MSG_WARN([header 'mpfr.h' not found - continuing without mpfr support])]
 )
 AC_CHECK_HEADERS([getopt.h],,
   [AC_MSG_ERROR([header 'getopt.h' is required])]
@@ -91,10 +91,10 @@ AC_CHECK_HEADER_STDBOOL
 # Checks for library functions.
 AC_CHECK_FUNCS([alarm memset strdup strtol])
 AC_CHECK_LIB(gmp, __gmpz_init,,
-  [AC_MSG_ERROR([library 'gmp' is required])]
+  [AC_MSG_WARN([library 'gmp' not found - continuing without gmp support])]
 )
 AC_CHECK_LIB(mpfr,mpfr_init,,
-  [AC_MSG_ERROR([library 'mpfr' is required])]
+  [AC_MSG_WARN([library 'mpfr' not found - continuing without mpfr support])]
 )
 
 AC_CONFIG_FILES([Makefile
