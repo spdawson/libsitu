@@ -72,6 +72,11 @@ Makefile.in
 /utils/situ
 /utils/*.o
 
+# make dist generated stuff
+
+/libsitu-*.tar.*
+/libsitu-*.zip
+
 # miscellaneous
 
 *~
