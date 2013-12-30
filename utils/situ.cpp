@@ -17,13 +17,6 @@
   along with libsitu.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/**
- * @brief Command line client for libsitu
- *
- * Output GPS fix data gathered by libsitu. By default, a single fix is
- * output.
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -44,12 +37,12 @@ void print_help(
          "Output GPS fix data\n"
          "\n"
          "Options:\n"
-         "  -h, --help                 Print usage information\n"
-         "  -l, --loop                 Run in a loop, outputting fix information\n"
-         "  -t, --timeout <timeout_s>  Timeout waiting for GPS data after the\n"
-         "                             specified number of seconds\n"
-         "  -x, --host <host>          Connect to gpsd on specified host\n"
-         "  -p, --port <port>          Connect to gpsd on specified port\n",
+         "  -h, --help             Print usage information\n"
+         "  -l, --loop             Run in a loop, outputting fix information\n"
+         "  -t, --timeout=TIMEOUT  Timeout waiting for GPS data after the\n"
+         "                         specified number of seconds\n"
+         "  -x, --host=HOST        Connect to gpsd on specified host\n"
+         "  -p, --port=PORT        Connect to gpsd on specified port\n",
          program_name);
 }
 
