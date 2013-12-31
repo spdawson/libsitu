@@ -23,6 +23,7 @@ man_MANS = $(directory)/man3/libsitu.3 $(directory)/man3/situ.3
 dist_doc_DATA = libsitu.md situ.md
 
 $(man_MANS): $(dist_doc_DATA)
+	mkdir -p $(directory)
 	$(DOXYGEN) Doxyfile
 
 all-local: $(man_MANS)
