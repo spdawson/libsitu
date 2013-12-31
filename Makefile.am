@@ -15,7 +15,7 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with libsitu.  If not, see <http://www.gnu.org/licenses/>.
 
-SUBDIRS = src demos utils
+SUBDIRS = src demos docs utils
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = libsitu.pc
 dist_doc_DATA = AUTHORS ChangeLog NEWS README COPYING COPYING.LESSER

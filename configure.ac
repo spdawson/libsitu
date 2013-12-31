@@ -43,6 +43,14 @@ AC_PROG_RANLIB
 # Test the C++ compiler.
 AC_LANG_CPLUSPLUS
 
+# Stuff for Doxygen.
+AC_CHECK_PROGS([DOXYGEN], [doxygen])
+if test -z "$DOXYGEN";
+   then AC_MSG_WARN([Doxygen not found - continuing without Doxygen support])
+fi
+AM_CONDITIONAL([HAVE_DOXYGEN], [test -n "$DOXYGEN"])
+AM_COND_IF([HAVE_DOXYGEN], [AC_CONFIG_FILES([docs/Doxyfile])])
+
 # Stuff for Git.
 AC_CHECK_PROGS([GIT], [git])
 if test -z "$GIT";
@@ -99,6 +107,7 @@ AC_CHECK_LIB(mpfr,mpfr_init,,
 
 AC_CONFIG_FILES([Makefile
                  demos/Makefile
+                 docs/Makefile
                  src/Makefile
                  utils/Makefile
                  libsitu.pc])

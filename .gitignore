@@ -49,6 +49,8 @@ Makefile.in
 /config.h
 /config.log
 /config.status
+/docs/Doxyfile
+/docs/Makefile
 /demos/.deps/
 /demos/Makefile
 /libsitu.pc
@@ -64,6 +66,7 @@ Makefile.in
 /demos/.libs/
 /demos/demo
 /demos/*.o
+/docs/man/
 /src/.libs/
 /src/*.la
 /src/*.lo
