@@ -78,28 +78,6 @@ namespace libsitu {
     unlock_watches();
   }
 
-  void Gps::handle_poll_fix(const Fix &fix)
-  {
-    lock_watches();
-
-    /* \todo FIXME: Possibly dodgy copy */
-    m_last_fix = fix;
-
-    handle_fix(fix);
-
-    for (WatchMap::iterator iter = m_watches.begin();
-         m_watches.end() != iter; ++iter) {
-      iter->second.handle_fix(fix, iter->first.c_str());
-    }
-
-    unlock_watches();
-  }
-
-  void Gps::handle_poll_timeout()
-  {
-    handle_timeout();
-  }
-
   const char* Gps::get_host() const
   {
     return m_host;
@@ -124,6 +102,28 @@ namespace libsitu {
   {
     /* \todo FIXME: Possibly dodgy copy */
     fix = m_last_fix;
+  }
+
+  void Gps::handle_poll_fix(const Fix &fix)
+  {
+    lock_watches();
+
+    /* \todo FIXME: Possibly dodgy copy */
+    m_last_fix = fix;
+
+    handle_fix(fix);
+
+    for (WatchMap::iterator iter = m_watches.begin();
+         m_watches.end() != iter; ++iter) {
+      iter->second.handle_fix(fix, iter->first.c_str());
+    }
+
+    unlock_watches();
+  }
+
+  void Gps::handle_poll_timeout()
+  {
+    handle_timeout();
   }
 
   void Gps::handle_fix(const Fix &UNUSED(fix))

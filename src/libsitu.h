@@ -78,9 +78,6 @@ namespace libsitu {
                    WatchAlarm alarm, void *data);
     void remove_watch(const char *name);
 
-    void handle_poll_fix(const Fix &fix);
-    void handle_poll_timeout();
-
     const char* get_host() const;
     const char* get_port() const;
     int get_poll_us() const;
@@ -93,6 +90,15 @@ namespace libsitu {
     Gps& operator=(const Gps&);
 
     typedef std::map<std::string,Watch> WatchMap;
+
+    /*
+     * This needs to be a friend, so that it can call handle_poll_fix() and
+     * handle_poll_timeout()
+     */
+    friend void* poller(void *arg);
+
+    void handle_poll_fix(const Fix &fix);
+    void handle_poll_timeout();
 
     virtual void handle_fix(const Fix &fix);
     virtual void handle_timeout();
