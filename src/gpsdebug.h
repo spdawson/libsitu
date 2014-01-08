@@ -17,8 +17,8 @@
   along with libsitu.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef _LIBSITU_DEBUG_H_
-#define _LIBSITU_DEBUG_H_
+#ifndef _LIBSITU_GPSDEBUG_H_
+#define _LIBSITU_GPSDEBUG_H_
 
 #include <stdio.h>
 
