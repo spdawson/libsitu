@@ -16,7 +16,7 @@ A C++ client library for gpsd. Key features:
 License
 -------
 
-Copyright 2013 Simon Dawson
+Copyright 2013-2014 Simon Dawson
 
 This file is part of libsitu.
 
