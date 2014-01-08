@@ -1,5 +1,5 @@
 /*
-  Copyright 2013 Simon Dawson
+  Copyright 2013-2014 Simon Dawson
 
   This file is part of libsitu.
 
@@ -36,12 +36,20 @@
 
 namespace libsitu {
 
+  /** @brief Event type
+   *
+   * Enumerates the event types
+   */
   typedef enum {
-    EVENT_NONE = 0,
-    EVENT_ARRIVE = 1,
-    EVENT_DEPART = 2
+    EVENT_NONE = 0, /**< None */
+    EVENT_ARRIVE = 1, /**< Arrival at a watch */
+    EVENT_DEPART = 2 /**< Departure from a watch */
   } Event;
 
+  /** @brief Fix data
+   *
+   * A simple structure to represent fix data
+   */
   struct Fix {
     bool valid;
 
@@ -59,31 +67,115 @@ namespace libsitu {
     unsigned satellites_used;
   };
 
+  /** @brief Watch alarm
+   *
+   * A function pointer type for watch callbacks
+   */
   typedef void (*WatchAlarm)(const char *name, double distance, Event event,
                              void *data);
 
+  /** @brief Utility functions
+   */
   namespace Util {
+    /** @brief Get a string representation of an event
+     *
+     * @param[in] event The event to be stringified
+     * @return String representation of event
+     */
     const char* event_str(Event event);
+
+    /** @brief Dump fix data
+     *
+     * Dump fix data to standard output, in JSON format
+     *
+     * @param[in] fix The fix to be dumped
+     */
     void dump_fix_json(const Fix &fix);
+
+    /** @brief Parse string to integer
+     *
+     * Attempt to parse a string to an integer value
+     *
+     * @param[in] str The string to be parsed
+     * @param[out] val The integer value returned
+     * @return Success flag
+     */
     bool parse_string_to_integer(const char *str, int *val);
   }
 
+  /** @brief Opaque type used internally to represent a watch */
   class Watch;
 
+  /** @brief GPS interface
+   *
+   * Main API class, representing a GPS interface
+   */
   class Gps {
   public:
+    /** @brief Constructor
+     *
+     * @param[in] host Host name
+     * @param[in] port Port designation
+     * @param[in] poll_us GPS poll timeout, in microseconds
+     * @param[in] sleep_us Inter-poll sleep time, in microseconds
+     */
     Gps(const char *host, const char *port, int poll_us, int sleep_us);
+
+    /** @brief Destructor */
     virtual ~Gps();
+
+    /** @brief Add a watch
+     *
+     * Add a named GPS watch
+     *
+     * @param[in] name The name of the watch to be added
+     * @param[in] lat Latitude of the watch
+     * @param[in] lon Longitude of the watch
+     * @param[in] rad The watch radius, in meters
+     * @param[in] alarm Watch alarm callback function
+     * @param[in] data Opaque data to be passed to the watch alarm callback
+     */
     void add_watch(const char *name, double lat, double lon, double rad,
                    WatchAlarm alarm, void *data);
+
+    /** @brief Remove a watch
+     *
+     * Remove a named watch
+     *
+     * @param[in] name The name of the watch to be removed
+     */
     void remove_watch(const char *name);
 
+    /** @brief Get the host name
+     *
+     * @return The host name
+     */
     const char* get_host() const;
+
+    /** @brief Get the port designation
+     *
+     * @return The port designation
+     */
     const char* get_port() const;
+
+    /** @brief Get the GPS poll timeout, in microseconds
+     *
+     * @return The GPS poll timeout, in microseconds
+     */
     int get_poll_us() const;
+
+    /** @brief Get the inter-poll sleep time, in microseconds
+     *
+     * @return The inter-poll sleep time, in microseconds
+     */
     int get_sleep_us() const;
 
+    /** @brief Get the last fix
+     *
+     * @param[out] fix The fix
+     */
     void get_last_fix(Fix &fix) const;
+
   private:
 
     Gps(const Gps&);
